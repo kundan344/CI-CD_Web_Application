@@ -1,12 +1,7 @@
-FROM centos:latest
+FROM ubuntu:latest
 MAINTAINER kundan.k845438@gmail.com
-RUN cd /etc/yum.repos.d/
-RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-RUN yum install -y httpd \
- zip\
- unzip
+RUN apt-get update && apt-get install -y apache2 && apt-get install -y unzip
+COPY . /var/www/html/
 WORKDIR /var/www/html/
-COPY . .
-CMD ["/usr/sbin/httpd", "D", "FOREGROUND"]
 EXPOSE 80
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
